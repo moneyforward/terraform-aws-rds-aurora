@@ -159,6 +159,7 @@ resource "aws_rds_cluster" "this" {
       replication_source_identifier,
       # See docs here https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_global_cluster#new-global-cluster-from-existing-db-cluster
       global_cluster_identifier,
+      engine_version,
     ]
   }
 }
@@ -198,6 +199,10 @@ resource "aws_rds_cluster_instance" "this" {
     create = try(var.instance_timeouts.create, null)
     update = try(var.instance_timeouts.update, null)
     delete = try(var.instance_timeouts.delete, null)
+  }
+
+  lifecycle {
+    ignore_changes = [engine_version]
   }
 }
 
